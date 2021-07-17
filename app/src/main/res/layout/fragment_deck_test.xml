@@ -28,6 +28,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/bt_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -35,6 +36,7 @@
                 android:text="@string/back"/>
 
             <Button
+                android:id="@+id/bt_flip"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -42,6 +44,7 @@
                 android:text="@string/flip"/>
 
             <Button
+                android:id="@+id/bt_next"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"

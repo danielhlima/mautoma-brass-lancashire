@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
 
     private ImageView iv;
     private LoadDeckViewModel viewModel;
+    private int currentDeckIndex;
+    private List<Card> cards;
 
 
     public DeckTestFragment() {
@@ -30,6 +33,7 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentDeckIndex = 0;
     }
 
     @Override
@@ -46,6 +50,34 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deck_test, container, false);
+        ((Button)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentDeckIndex > 0){
+                    Card card = cards.get(currentDeckIndex-1);
+                    iv.setImageDrawable(card.getDrawable());
+                    currentDeckIndex-=1;
+                }
+            }
+        });
+
+        ((Button)view.findViewById(R.id.bt_flip)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        ((Button)view.findViewById(R.id.bt_next)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentDeckIndex < cards.size()-1){
+                    Card card = cards.get(currentDeckIndex+1);
+                    iv.setImageDrawable(card.getDrawable());
+                    currentDeckIndex+=1;
+                }
+            }
+        });
 
         iv =(ImageView)view.findViewById(R.id.iv_test);
 
@@ -59,7 +91,8 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     @Override
     public void onSuccess(List<Card> parameter) {
         if(parameter != null){
-            Card card = parameter.get(0);
+            cards = parameter;
+            Card card = parameter.get(currentDeckIndex);
             iv.setImageDrawable(card.getDrawable());
         }
     }
