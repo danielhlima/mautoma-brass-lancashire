@@ -6,9 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.DeckTestFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primaryDarkColor"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iv_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="3"
+            android:scaleType="fitStart"
+            android:src="@drawable/a21b" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="14"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_margin="10dp"
+                android:text="@string/back"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:text="@string/flip"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:text="@string/next"/>
+
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
