@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.mautomabrasslancashire.R;
@@ -23,7 +24,8 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     private ImageView iv;
     private LoadDeckViewModel viewModel;
     private int currentDeckIndex;
-    private List<Card> cards;
+    private List<Card> cards, deckA, deckB, deckC, gameDeck;
+    private Card currentCard;
 
 
     public DeckTestFragment() {
@@ -54,8 +56,8 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
             @Override
             public void onClick(View v) {
                 if(currentDeckIndex > 0){
-                    Card card = cards.get(currentDeckIndex-1);
-                    iv.setImageDrawable(card.getDrawable());
+                    currentCard = gameDeck.get(currentDeckIndex-1);
+                    iv.setImageDrawable(currentCard.getDrawable());
                     currentDeckIndex-=1;
                 }
             }
@@ -65,15 +67,32 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
             @Override
             public void onClick(View v) {
 
+                for(Card card : cards){
+                    if(currentCard.isFront()){
+                        if(currentCard.getName().equalsIgnoreCase(card.getName())
+                        && !card.isFront()){
+                            currentCard = card;
+                            iv.setImageDrawable(currentCard.getDrawable());
+                            break;
+                        }
+                    }else{
+                        if(currentCard.getName().equalsIgnoreCase(card.getName())
+                                && card.isFront()){
+                            currentCard = card;
+                            iv.setImageDrawable(currentCard.getDrawable());
+                            break;
+                        }
+                    }
+                }
             }
         });
 
         ((Button)view.findViewById(R.id.bt_next)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentDeckIndex < cards.size()-1){
-                    Card card = cards.get(currentDeckIndex+1);
-                    iv.setImageDrawable(card.getDrawable());
+                if (currentDeckIndex < gameDeck.size()-1){
+                    currentCard = gameDeck.get(currentDeckIndex+1);
+                    iv.setImageDrawable(currentCard.getDrawable());
                     currentDeckIndex+=1;
                 }
             }
@@ -92,13 +111,33 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     public void onSuccess(List<Card> parameter) {
         if(parameter != null){
             cards = parameter;
-            Card card = parameter.get(currentDeckIndex);
-            iv.setImageDrawable(card.getDrawable());
+            splitAndShuffle();
         }
     }
 
     @Override
     public void onError(Throwable throwable) {
 
+    }
+
+    public void splitAndShuffle(){
+
+        deckA = new ArrayList<Card>();
+        deckB = new ArrayList<Card>();
+        deckC = new ArrayList<Card>();
+        gameDeck = new ArrayList<Card>();
+
+        for(Card card : cards){
+            if(card.getName().startsWith("a") && card.isFront())
+                deckA.add(card);
+            else if(card.getName().startsWith("b") && card.isFront())
+                deckB.add(card);
+            else if(card.getName().startsWith("c") && card.isFront())
+                deckC.add(card);
+        }
+
+        gameDeck = deckA;
+        currentCard = gameDeck.get(currentDeckIndex);
+        iv.setImageDrawable(currentCard.getDrawable());
     }
 }
