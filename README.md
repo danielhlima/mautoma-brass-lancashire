@@ -7,4 +7,5 @@ If you would like to improve this project, please, contact me at: danielhenrique
 
 Thanks a lot.
 
-![print](https://user-images.githubusercontent.com/2964013/126056279-95531e44-d4f1-4e7a-914f-4718a6bf694d.png)
+![print](https://user-images.githubusercontent.com/2964013/126069295-6fccf690-c9d1-442d-9e45-cc582f40b409.png)
+
