@@ -30,6 +30,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
     private int currentDeckIndex;
     private List<Card> cards, deckA, deckB, deckC, gameDeck;
     private Card currentCard;
+    private boolean firstDraw;
 
 
     public GameFragment() {
@@ -47,7 +48,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         super.onResume();
         viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity()
         .getApplication()).create(LoadDeckViewModel.class);
-
+        firstDraw = true;
         loadDeck();
     }
 
@@ -56,6 +57,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deck_test, container, false);
+
         ((Button)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,58 +72,78 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         ((Button)view.findViewById(R.id.bt_flip)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flipCard();
+            }
+        });
 
-                for(Card card : cards){
-                    if(currentCard.isFront()){
-                        if(currentCard.getName().equalsIgnoreCase(card.getName())
-                        && !card.isFront()){
-                            currentCard = card;
-                            break;
-                        }
-                    }else{
-                        if(currentCard.getName().equalsIgnoreCase(card.getName())
-                                && card.isFront()){
-                            currentCard = card;
-                            break;
-                        }
-                    }
+        ((Button)view.findViewById(R.id.bt_top)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentDeckIndex + 1 == gameDeck.size()){
+                    Collections.shuffle(gameDeck);
+                    currentDeckIndex = 0;
+                    currentCard = gameDeck.get(currentDeckIndex);
                 }
 
-                final Drawable drawable=currentCard.getDrawable();
-                final ImageView iv_ = iv;
-                iv_.setRotationY(0f);
-                iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
-                {
-                    @Override
-                    public void onAnimationEnd(Animator animation)
-                    {
-                        iv_.setImageDrawable(drawable);
-                        iv_.setRotationY(270f);
-                        iv_.animate().rotationY(360f).setListener(null);
+                Card topCard = gameDeck.get(currentDeckIndex+1);
+
+                for(Card card : cards){
+                    if(topCard.getName().equalsIgnoreCase(card.getName())
+                            && !card.isFront()){
+
+                        final Drawable drawable=card.getDrawable();
+                        final ImageView iv_ = iv;
+                        iv_.setRotationY(0f);
+                        iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+                        {
+                            @Override
+                            public void onAnimationEnd(Animator animation)
+                            {
+                                iv_.setImageDrawable(drawable);
+                                iv_.setRotationY(270f);
+                                iv_.animate().rotationY(360f).setListener(null);
+                            }
+                        });
+                        break;
                     }
-                });
+                }
+                ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.INVISIBLE);
+                ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.INVISIBLE);
+                ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.INVISIBLE);
             }
         });
 
         ((Button)view.findViewById(R.id.bt_next)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentDeckIndex < gameDeck.size()-1){
-                    currentDeckIndex+=1;
-                    currentCard = gameDeck.get(currentDeckIndex);
-                    iv.setImageDrawable(currentCard.getDrawable());
+                if(firstDraw){
+                    flipCard();
+                    firstDraw = false;
                 }else{
-                    Collections.shuffle(gameDeck);
-                    currentDeckIndex = 0;
-                    currentCard = gameDeck.get(currentDeckIndex);
-                    iv.setImageDrawable(currentCard.getDrawable());
+                    if (currentDeckIndex < gameDeck.size()-1){
+                        currentDeckIndex+=1;
+                        currentCard = gameDeck.get(currentDeckIndex);
+                        iv.setImageDrawable(currentCard.getDrawable());
+                    }else{
+                        Collections.shuffle(gameDeck);
+                        currentDeckIndex = 0;
+                        currentCard = gameDeck.get(currentDeckIndex);
+                        iv.setImageDrawable(currentCard.getDrawable());
+                    }
                 }
+                ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.VISIBLE);
+                ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
+                ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
             }
         });
 
         ((Button)view.findViewById(R.id.bt_canal)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.INVISIBLE);
+                ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
+                ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
+                firstDraw = true;
                 splitAndShuffle(false);
             }
         });
@@ -129,6 +151,9 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         ((Button)view.findViewById(R.id.bt_rail)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.VISIBLE);
+                ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
+                ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
                 splitAndShuffle(true);
             }
         });
@@ -136,6 +161,38 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         iv =(ImageView)view.findViewById(R.id.iv_test);
 
         return view;
+    }
+
+    private void flipCard(){
+        for(Card card : cards){
+            if(currentCard.isFront()){
+                if(currentCard.getName().equalsIgnoreCase(card.getName())
+                        && !card.isFront()){
+                    currentCard = card;
+                    break;
+                }
+            }else{
+                if(currentCard.getName().equalsIgnoreCase(card.getName())
+                        && card.isFront()){
+                    currentCard = card;
+                    break;
+                }
+            }
+        }
+
+        final Drawable drawable=currentCard.getDrawable();
+        final ImageView iv_ = iv;
+        iv_.setRotationY(0f);
+        iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                iv_.setImageDrawable(drawable);
+                iv_.setRotationY(270f);
+                iv_.animate().rotationY(360f).setListener(null);
+            }
+        });
     }
 
     private void loadDeck(){

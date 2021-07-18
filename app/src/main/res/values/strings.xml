@@ -3,12 +3,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
-    <string name="flip">Flip</string>
-    <string name="next">Next</string>
+    <string name="flip">FLIP</string>
+    <string name="draw">Draw</string>
     <string name="canal_age">New game</string>
     <string name="bt_rail_age">Rail age</string>
     <string name="title">Automa for Brass Lancashire</string>
     <string name="classic">Classic mode</string>
     <string name="comunity">Community mode</string>
     <string name="partner">In partnership with...</string>
+    <string name="top">TOP</string>
 </resources>
