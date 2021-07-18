@@ -12,6 +12,30 @@
         android:background="@color/primaryDarkColor"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="14"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_canal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_margin="10dp"
+            android:text="@string/canal_age"/>
+
+        <Button
+            android:id="@+id/bt_rail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="3"
+            android:text="@string/bt_rail_age"/>
+
+    </LinearLayout>
+
         <ImageView
             android:id="@+id/iv_test"
             android:layout_width="wrap_content"

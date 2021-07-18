@@ -5,4 +5,6 @@
     <string name="back">Back</string>
     <string name="flip">Flip</string>
     <string name="next">Next</string>
+    <string name="canal_age">New game</string>
+    <string name="bt_rail_age">Rail age</string>
 </resources>

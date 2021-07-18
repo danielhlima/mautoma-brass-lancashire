@@ -57,9 +57,9 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
             @Override
             public void onClick(View v) {
                 if(currentDeckIndex > 0){
-                    currentCard = gameDeck.get(currentDeckIndex-1);
-                    iv.setImageDrawable(currentCard.getDrawable());
                     currentDeckIndex-=1;
+                    currentCard = gameDeck.get(currentDeckIndex);
+                    iv.setImageDrawable(currentCard.getDrawable());
                 }
             }
         });
@@ -92,10 +92,29 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
             @Override
             public void onClick(View v) {
                 if (currentDeckIndex < gameDeck.size()-1){
-                    currentCard = gameDeck.get(currentDeckIndex+1);
-                    iv.setImageDrawable(currentCard.getDrawable());
                     currentDeckIndex+=1;
+                    currentCard = gameDeck.get(currentDeckIndex);
+                    iv.setImageDrawable(currentCard.getDrawable());
+                }else{
+                    Collections.shuffle(gameDeck);
+                    currentDeckIndex = 0;
+                    currentCard = gameDeck.get(currentDeckIndex);
+                    iv.setImageDrawable(currentCard.getDrawable());
                 }
+            }
+        });
+
+        ((Button)view.findViewById(R.id.bt_canal)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                splitAndShuffle(false);
+            }
+        });
+
+        ((Button)view.findViewById(R.id.bt_rail)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                splitAndShuffle(true);
             }
         });
 
@@ -112,7 +131,7 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     public void onSuccess(List<Card> parameter) {
         if(parameter != null){
             cards = parameter;
-            splitAndShuffle();
+            splitAndShuffle(false);
         }
     }
 
@@ -121,28 +140,45 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
 
     }
 
-    public void splitAndShuffle(){
+    public void splitAndShuffle(boolean isRailAge){
 
+        currentDeckIndex = 0;
         deckA = new ArrayList<Card>();
         deckB = new ArrayList<Card>();
         deckC = new ArrayList<Card>();
         gameDeck = new ArrayList<Card>();
 
-        for(Card card : cards){
-            if(card.getName().startsWith("a") && card.isFront()) {
-                deckA.add(card);
-                Collections.shuffle(deckA);
+        if(isRailAge){
+            for(Card card : cards){
+                if(card.getName().startsWith("a") && card.isFront()) {
+                    deckA.add(card);
+                    Collections.shuffle(deckA);
+                }
+                else if(card.getName().startsWith("b") && card.isFront()) {
+                    deckB.add(card);
+                    Collections.shuffle(deckB);
+                }
+                else if(card.getName().startsWith("c") && card.isFront()) {
+                    deckC.add(card);
+                    Collections.shuffle(deckC);
+                }
             }
-            else if(card.getName().startsWith("b") && card.isFront()) {
-                deckB.add(card);
-                Collections.shuffle(deckB);
-            }
-            else if(card.getName().startsWith("c") && card.isFront()) {
-                deckC.add(card);
-                Collections.shuffle(deckC);
+        }else {
+            for(Card card : cards){
+                if(card.getName().startsWith("a") && card.isFront() && !card.isRailAge()) {
+                    deckA.add(card);
+                    Collections.shuffle(deckA);
+                }
+                else if(card.getName().startsWith("b") && card.isFront() && !card.isRailAge()) {
+                    deckB.add(card);
+                    Collections.shuffle(deckB);
+                }
+                else if(card.getName().startsWith("c") && card.isFront() && !card.isRailAge()) {
+                    deckC.add(card);
+                    Collections.shuffle(deckC);
+                }
             }
         }
-
 
         gameDeck.add(deckA.remove(0));
         gameDeck.add(deckA.remove(0));
@@ -165,6 +201,7 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
 
         List<Card> set4AutomaDec = new ArrayList<Card>();
         set4AutomaDec.addAll(deckA);
+        set4AutomaDec.addAll(deckB);
         set4AutomaDec.addAll(deckC);
         Collections.shuffle(set4AutomaDec);
         gameDeck.addAll(set4AutomaDec);
@@ -173,12 +210,16 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
 
         currentCard = gameDeck.get(currentDeckIndex);
 
-        for(Card card : cards){
-            if(currentCard.getName().equalsIgnoreCase(card.getName())
-                    && !card.isFront()){
-                currentCard = card;
-                iv.setImageDrawable(currentCard.getDrawable());
-                break;
+        if(isRailAge){
+            iv.setImageDrawable(currentCard.getDrawable());
+        }else{
+            for(Card card : cards){
+                if(currentCard.getName().equalsIgnoreCase(card.getName())
+                        && !card.isFront()){
+                    currentCard = card;
+                    iv.setImageDrawable(currentCard.getDrawable());
+                    break;
+                }
             }
         }
     }
