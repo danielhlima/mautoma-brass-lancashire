@@ -1,5 +1,8 @@
 package br.com.mautomabrasslancashire.view.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +23,7 @@ import br.com.mautomabrasslancashire.domain.bus.DataOut;
 import br.com.mautomabrasslancashire.domain.entities.Card;
 import br.com.mautomabrasslancashire.view.viewmodel.LoadDeckViewModel;
 
-public class DeckTestFragment extends Fragment implements DataOut.Callback<List<Card>> {
+public class GameFragment extends Fragment implements DataOut.Callback<List<Card>> {
 
     private ImageView iv;
     private LoadDeckViewModel viewModel;
@@ -29,7 +32,7 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
     private Card currentCard;
 
 
-    public DeckTestFragment() {
+    public GameFragment() {
         // Required empty public constructor
     }
 
@@ -73,18 +76,30 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
                         if(currentCard.getName().equalsIgnoreCase(card.getName())
                         && !card.isFront()){
                             currentCard = card;
-                            iv.setImageDrawable(currentCard.getDrawable());
                             break;
                         }
                     }else{
                         if(currentCard.getName().equalsIgnoreCase(card.getName())
                                 && card.isFront()){
                             currentCard = card;
-                            iv.setImageDrawable(currentCard.getDrawable());
                             break;
                         }
                     }
                 }
+
+                final Drawable drawable=currentCard.getDrawable();
+                final ImageView iv_ = iv;
+                iv_.setRotationY(0f);
+                iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+                {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        iv_.setImageDrawable(drawable);
+                        iv_.setRotationY(270f);
+                        iv_.animate().rotationY(360f).setListener(null);
+                    }
+                });
             }
         });
 

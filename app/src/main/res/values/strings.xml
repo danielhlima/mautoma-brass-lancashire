@@ -7,4 +7,8 @@
     <string name="next">Next</string>
     <string name="canal_age">New game</string>
     <string name="bt_rail_age">Rail age</string>
+    <string name="title">Automa for Brass Lancashire</string>
+    <string name="classic">Classic mode</string>
+    <string name="comunity">Community mode</string>
+    <string name="partner">In partnership with...</string>
 </resources>
