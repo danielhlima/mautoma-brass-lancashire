@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.mautomabrasslancashire.R;
@@ -128,16 +129,57 @@ public class DeckTestFragment extends Fragment implements DataOut.Callback<List<
         gameDeck = new ArrayList<Card>();
 
         for(Card card : cards){
-            if(card.getName().startsWith("a") && card.isFront())
+            if(card.getName().startsWith("a") && card.isFront()) {
                 deckA.add(card);
-            else if(card.getName().startsWith("b") && card.isFront())
+                Collections.shuffle(deckA);
+            }
+            else if(card.getName().startsWith("b") && card.isFront()) {
                 deckB.add(card);
-            else if(card.getName().startsWith("c") && card.isFront())
+                Collections.shuffle(deckB);
+            }
+            else if(card.getName().startsWith("c") && card.isFront()) {
                 deckC.add(card);
+                Collections.shuffle(deckC);
+            }
         }
 
-        gameDeck = deckA;
+
+        gameDeck.add(deckA.remove(0));
+        gameDeck.add(deckA.remove(0));
+        gameDeck.add(deckA.remove(0));
+        gameDeck.add(deckA.remove(0));
+        gameDeck.add(deckB.remove(0));
+        gameDeck.add(deckB.remove(0));
+        gameDeck.add(deckB.remove(0));
+        gameDeck.add(deckC.remove(0));
+        gameDeck.add(deckC.remove(0));
+        gameDeck.add(deckC.remove(0));
+
+        List<Card> set3AutomaDec = new ArrayList<Card>();
+        set3AutomaDec.add(deckA.remove(0));
+        set3AutomaDec.add(deckB.remove(0));
+        set3AutomaDec.add(deckC.remove(0));
+        Collections.shuffle(set3AutomaDec);
+        gameDeck.addAll(set3AutomaDec);
+
+
+        List<Card> set4AutomaDec = new ArrayList<Card>();
+        set4AutomaDec.addAll(deckA);
+        set4AutomaDec.addAll(deckC);
+        Collections.shuffle(set4AutomaDec);
+        gameDeck.addAll(set4AutomaDec);
+
+        Collections.reverse(gameDeck);
+
         currentCard = gameDeck.get(currentDeckIndex);
-        iv.setImageDrawable(currentCard.getDrawable());
+
+        for(Card card : cards){
+            if(currentCard.getName().equalsIgnoreCase(card.getName())
+                    && !card.isFront()){
+                currentCard = card;
+                iv.setImageDrawable(currentCard.getDrawable());
+                break;
+            }
+        }
     }
 }
