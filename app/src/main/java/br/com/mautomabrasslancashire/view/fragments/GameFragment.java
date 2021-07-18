@@ -3,6 +3,7 @@ package br.com.mautomabrasslancashire.view.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
     private List<Card> cards, deckA, deckB, deckC, gameDeck;
     private Card currentCard;
     private boolean firstDraw;
+    private MediaPlayer player;
 
 
     public GameFragment() {
@@ -50,6 +52,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         .getApplication()).create(LoadDeckViewModel.class);
         firstDraw = true;
         loadDeck();
+        player = MediaPlayer.create(getContext(), R.raw.cardflip);
     }
 
     @Override
@@ -64,7 +67,21 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                 if(currentDeckIndex > 0){
                     currentDeckIndex-=1;
                     currentCard = gameDeck.get(currentDeckIndex);
-                    iv.setImageDrawable(currentCard.getDrawable());
+                    player.start();
+
+                    final Drawable drawable=currentCard.getDrawable();
+                    final ImageView iv_ = iv;
+                    iv_.setRotationY(0f);
+                    iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+                    {
+                        @Override
+                        public void onAnimationEnd(Animator animation)
+                        {
+                            iv_.setImageDrawable(drawable);
+                            iv_.setRotationY(270f);
+                            iv_.animate().rotationY(360f).setListener(null);
+                        }
+                    });
                 }
             }
         });
@@ -110,6 +127,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                 ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.INVISIBLE);
                 ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.INVISIBLE);
                 ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.INVISIBLE);
+                player.start();
             }
         });
 
@@ -123,17 +141,42 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                     if (currentDeckIndex < gameDeck.size()-1){
                         currentDeckIndex+=1;
                         currentCard = gameDeck.get(currentDeckIndex);
-                        iv.setImageDrawable(currentCard.getDrawable());
+                        final Drawable drawable=currentCard.getDrawable();
+                        final ImageView iv_ = iv;
+                        iv_.setRotationY(0f);
+                        iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+                        {
+                            @Override
+                            public void onAnimationEnd(Animator animation)
+                            {
+                                iv_.setImageDrawable(drawable);
+                                iv_.setRotationY(270f);
+                                iv_.animate().rotationY(360f).setListener(null);
+                            }
+                        });
                     }else{
                         Collections.shuffle(gameDeck);
                         currentDeckIndex = 0;
                         currentCard = gameDeck.get(currentDeckIndex);
-                        iv.setImageDrawable(currentCard.getDrawable());
+                        final Drawable drawable=currentCard.getDrawable();
+                        final ImageView iv_ = iv;
+                        iv_.setRotationY(0f);
+                        iv_.animate().rotationY(90f).setListener(new AnimatorListenerAdapter()
+                        {
+                            @Override
+                            public void onAnimationEnd(Animator animation)
+                            {
+                                iv_.setImageDrawable(drawable);
+                                iv_.setRotationY(270f);
+                                iv_.animate().rotationY(360f).setListener(null);
+                            }
+                        });
                     }
                 }
                 ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.VISIBLE);
                 ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
                 ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
+                player.start();
             }
         });
 
@@ -145,6 +188,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                 ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
                 firstDraw = true;
                 splitAndShuffle(false);
+                player.start();
             }
         });
 
@@ -155,6 +199,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                 ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
                 ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
                 splitAndShuffle(true);
+                player.start();
             }
         });
 
@@ -164,6 +209,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
     }
 
     private void flipCard(){
+        player.start();
         for(Card card : cards){
             if(currentCard.isFront()){
                 if(currentCard.getName().equalsIgnoreCase(card.getName())
