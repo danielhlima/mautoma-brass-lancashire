@@ -42,8 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitStart"
-            android:layout_weight="3"
-            android:src="@drawable/a21b" />
+            android:layout_weight="3" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +82,13 @@
                 android:layout_weight="3"
                 android:visibility="invisible"
                 android:text="@string/top"/>
-
         </LinearLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primaryDarkColor"/>
+
 </FrameLayout>

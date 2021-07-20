@@ -8,8 +8,9 @@
     <string name="canal_age">New game</string>
     <string name="bt_rail_age">Rail age</string>
     <string name="title">Automa for Brass Lancashire</string>
-    <string name="classic">Classic mode</string>
-    <string name="comunity">Community mode</string>
-    <string name="partner">In partnership with...</string>
+    <string name="classic">Classic</string>
+    <string name="comunity">Community</string>
+    <string name="presentation">App developed to simulate the Mautoma deck for the board game Brass Lancashire.\n\nYou can find more information at http://www.mautoma.com\n\nIf you would like to improve this app, please join me at:\n\nhttps://github.com/danielhlima/mautoma-brass-lancashire</string>
+    <string name="partner">With authorization of Mautoma\nhttp://www.mautoma.com</string>
     <string name="top">TOP</string>
 </resources>

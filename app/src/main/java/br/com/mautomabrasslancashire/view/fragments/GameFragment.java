@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +26,7 @@ import br.com.mautomabrasslancashire.domain.bus.DataOut;
 import br.com.mautomabrasslancashire.domain.entities.Card;
 import br.com.mautomabrasslancashire.view.viewmodel.LoadDeckViewModel;
 
-public class GameFragment extends Fragment implements DataOut.Callback<List<Card>> {
+public class GameFragment extends Fragment implements DataOut.Callback<LiveData<List<Card>>> {
 
     private ImageView iv;
     private LoadDeckViewModel viewModel;
@@ -33,6 +35,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
     private Card currentCard;
     private boolean firstDraw;
     private MediaPlayer player;
+    private ProgressBar pBar;
 
 
     public GameFragment() {
@@ -50,9 +53,12 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
         super.onResume();
         viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity()
         .getApplication()).create(LoadDeckViewModel.class);
-        firstDraw = true;
-        loadDeck();
-        player = MediaPlayer.create(getContext(), R.raw.cardflip);
+        if(currentCard == null || cards == null || deckA == null ||
+                deckB == null || deckC == null || gameDeck == null){
+            firstDraw = true;
+            loadDeck();
+            player = MediaPlayer.create(getContext(), R.raw.cardflip);
+        }
     }
 
     @Override
@@ -60,6 +66,8 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deck_test, container, false);
+
+        pBar = (ProgressBar)view.findViewById(R.id.pb_loading);
 
         ((Button)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,10 +254,11 @@ public class GameFragment extends Fragment implements DataOut.Callback<List<Card
     }
 
     @Override
-    public void onSuccess(List<Card> parameter) {
+    public void onSuccess(LiveData<List<Card>> parameter) {
         if(parameter != null){
-            cards = parameter;
+            cards = parameter.getValue();
             splitAndShuffle(false);
+            pBar.setVisibility(View.INVISIBLE);
         }
     }
 

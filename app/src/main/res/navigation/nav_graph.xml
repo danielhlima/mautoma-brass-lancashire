@@ -3,12 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/deckTestFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/deckTestFragment"
         android:name="br.com.mautomabrasslancashire.view.fragments.GameFragment"
         android:label="fragment_deck_test"
         tools:layout="@layout/fragment_deck_test" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="br.com.mautomabrasslancashire.view.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_deckTestFragment"
+            app:destination="@id/deckTestFragment" />
+    </fragment>
 
 </navigation>

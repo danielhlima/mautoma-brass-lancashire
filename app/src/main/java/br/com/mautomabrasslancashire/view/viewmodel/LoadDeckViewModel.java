@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -15,7 +17,8 @@ import br.com.mautomabrasslancashire.view.bus.LoadDeckView;
 public class LoadDeckViewModel extends AndroidViewModel implements LoadDeckView {
 
     private LoadDeckPresenter presenter;
-    private DataOut.Callback<List<Card>> callback;
+    private DataOut.Callback<LiveData<List<Card>>> callback;
+    private MutableLiveData<List<Card>> cards;
 
     public LoadDeckViewModel(@NonNull Application application) {
         super(application);
@@ -23,14 +26,18 @@ public class LoadDeckViewModel extends AndroidViewModel implements LoadDeckView 
     }
 
     @Override
-    public void loadDeck(DataOut.Callback<List<Card>> callback) {
+    public void loadDeck(DataOut.Callback<LiveData<List<Card>>> callback) {
         this.callback = callback;
         presenter.loadDeck();
     }
 
     @Override
     public void onSuccess(List<Card> parameter) {
-        callback.onSuccess(parameter);
+        if(cards == null){
+            cards = new MutableLiveData<List<Card>>();
+            cards.setValue(parameter);
+        }
+        callback.onSuccess(cards);
     }
 
     @Override
