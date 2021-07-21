@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="14"
+        android:layout_weight="13"
         android:orientation="horizontal">
 
         <Button
@@ -42,44 +42,45 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitStart"
-            android:layout_weight="3" />
+            android:layout_weight="3"
+            android:src="@drawable/a22f_cl"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="14"
+            android:layout_weight="13"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/bt_back"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:layout_margin="10dp"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:layout_margin="6dp"
                 android:text="@string/back"/>
 
             <Button
                 android:id="@+id/bt_flip"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="3"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:layout_weight="2"
                 android:text="@string/flip"/>
 
             <Button
                 android:id="@+id/bt_next"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="3"
-                android:text="@string/draw"/>
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:layout_weight="2"
+                android:text="@string/draw_current"/>
 
             <Button
                 android:id="@+id/bt_top"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="3"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:layout_weight="2"
                 android:visibility="invisible"
                 android:text="@string/top"/>
         </LinearLayout>

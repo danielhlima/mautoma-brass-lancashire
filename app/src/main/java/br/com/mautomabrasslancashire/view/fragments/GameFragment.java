@@ -36,6 +36,7 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
     private boolean firstDraw;
     private MediaPlayer player;
     private ProgressBar pBar;
+    private Button btDraw, btFlip, btTop, btBack;
 
 
     public GameFragment() {
@@ -69,7 +70,8 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
 
         pBar = (ProgressBar)view.findViewById(R.id.pb_loading);
 
-        ((Button)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
+        btBack = (Button)view.findViewById(R.id.bt_back);
+        btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(currentDeckIndex > 0){
@@ -94,14 +96,16 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
             }
         });
 
-        ((Button)view.findViewById(R.id.bt_flip)).setOnClickListener(new View.OnClickListener() {
+        btFlip = (Button)view.findViewById(R.id.bt_flip);
+        btFlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 flipCard();
             }
         });
 
-        ((Button)view.findViewById(R.id.bt_top)).setOnClickListener(new View.OnClickListener() {
+        btTop = (Button)view.findViewById(R.id.bt_top);
+        btTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentDeckIndex + 1 == gameDeck.size()){
@@ -135,11 +139,13 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
                 ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.INVISIBLE);
                 ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.INVISIBLE);
                 ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.INVISIBLE);
+                ((Button)view.findViewById(R.id.bt_next)).setText(R.string.draw_current);
                 player.start();
             }
         });
 
-        ((Button)view.findViewById(R.id.bt_next)).setOnClickListener(new View.OnClickListener() {
+        btDraw = (Button)view.findViewById(R.id.bt_next);
+        btDraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(firstDraw){
@@ -181,9 +187,10 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
                         });
                     }
                 }
-                ((Button)view.findViewById(R.id.bt_top)).setVisibility(View.VISIBLE);
-                ((Button)view.findViewById(R.id.bt_flip)).setVisibility(View.VISIBLE);
-                ((Button)view.findViewById(R.id.bt_back)).setVisibility(View.VISIBLE);
+                btTop.setVisibility(View.VISIBLE);
+                btFlip.setVisibility(View.VISIBLE);
+                btBack.setVisibility(View.VISIBLE);
+                btDraw.setText(R.string.draw_next);
                 player.start();
             }
         });
@@ -305,6 +312,11 @@ public class GameFragment extends Fragment implements DataOut.Callback<LiveData<
                     Collections.shuffle(deckC);
                 }
             }
+            btDraw.setText(R.string.draw_current);
+            btDraw.setVisibility(View.VISIBLE);
+            btBack.setVisibility(View.INVISIBLE);
+            btTop.setVisibility(View.INVISIBLE);
+            btFlip.setVisibility(View.INVISIBLE);
         }
 
         gameDeck.add(deckA.remove(0));

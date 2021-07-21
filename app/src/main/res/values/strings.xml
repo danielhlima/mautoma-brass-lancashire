@@ -2,9 +2,10 @@
     <string name="app_name">Mautoma BL</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="back">Back</string>
-    <string name="flip">FLIP</string>
-    <string name="draw">Draw</string>
+    <string name="back">Back prev</string>
+    <string name="flip">Flip current</string>
+    <string name="draw_next">Draw next</string>
+    <string name="draw_current">Draw current</string>
     <string name="canal_age">New game</string>
     <string name="bt_rail_age">Rail age</string>
     <string name="title">Automa for Brass Lancashire</string>
@@ -12,5 +13,5 @@
     <string name="comunity">Community</string>
     <string name="presentation">App developed to simulate the Mautoma deck for the board game Brass Lancashire.\n\nYou can find more information at http://www.mautoma.com\n\nIf you would like to improve this app, please join me at:\n\nhttps://github.com/danielhlima/mautoma-brass-lancashire</string>
     <string name="partner">With authorization of Mautoma\nhttp://www.mautoma.com</string>
-    <string name="top">TOP</string>
+    <string name="top">View top</string>
 </resources>
