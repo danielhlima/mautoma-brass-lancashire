@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.mautomabrasslancashire.domain.bus.DataOut;
 import br.com.mautomabrasslancashire.domain.entities.Card;
 import br.com.mautomabrasslancashire.domain.repositories.LoadDeckRepository;
+import br.com.mautomabrasslancashire.view.fragments.HomeFragment;
 
 public class LoadDeckUseCase implements DataOut.Callback<List<Card>> {
 
@@ -18,7 +19,10 @@ public class LoadDeckUseCase implements DataOut.Callback<List<Card>> {
 
 public void loadDeck(){
     if(repository != null){
-        repository.loadDeckCards(this);
+        if(HomeFragment.isClassic)
+            repository.loadDeckCards(this);
+        else
+            repository.loadDeckCardsForCommunityVersion(this);
     }
 }
 

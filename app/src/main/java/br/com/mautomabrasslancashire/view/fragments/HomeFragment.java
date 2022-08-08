@@ -17,6 +17,8 @@ import br.com.mautomabrasslancashire.R;
 
 public class HomeFragment extends Fragment {
 
+    public static boolean isClassic = true;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -35,13 +37,16 @@ public class HomeFragment extends Fragment {
         ((Button)view.findViewById(R.id.bt_comty)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Comming soon.", Toast.LENGTH_LONG).show();
+                HomeFragment.isClassic = false;
+                NavDirections navDirections = HomeFragmentDirections.actionHomeFragmentToDeckTestFragment();
+                Navigation.findNavController(getActivity(), R.id.nav_host).navigate(navDirections);
             }
         });
 
         ((Button)view.findViewById(R.id.bt_clas)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HomeFragment.isClassic = true;
                 NavDirections navDirections = HomeFragmentDirections.actionHomeFragmentToDeckTestFragment();
                 Navigation.findNavController(getActivity(), R.id.nav_host).navigate(navDirections);
             }
